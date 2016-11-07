@@ -54,13 +54,10 @@ module Apipie
     # the app might be nested when using contraints, namespaces etc.
     # this method does in depth search for the route controller
     def route_app_controller(app, route, visited_apps = [])
-      visited_apps << app
-      if app.respond_to?(:controller)
-        return app.controller(route.defaults)
-      elsif app.respond_to?(:app) && !visited_apps.include?(app.app)
-        return route_app_controller(app.app, route, visited_apps)
+      if route.defaults && route.defaults.key?(:controller)
+        ActiveSupport::Dependencies.constantize("#{route.defaults[:controller].camelize}Controller")
       end
-    rescue ActionController::RoutingError
+    rescue NameError
       # some errors in the routes will not stop us here: just ignoring
     end
 
@@ -392,7 +389,7 @@ module Apipie
     def version_prefix(klass)
       version = controller_versions(klass).first
       base_url = get_base_url(version)
-      return "/" if base_url.nil?
+      return "" if base_url.nil?
       base_url[1..-1] + "/"
     end
 
