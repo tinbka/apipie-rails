@@ -302,7 +302,7 @@ module Apipie
       end
 
       def validate(value)
-        return false if !value.is_a? Hash
+        return false if !value.respond_to? :keys
         if @hash_params
           @hash_params.each do |k, p|
             if Apipie.configuration.validate_presence?
