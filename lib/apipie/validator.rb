@@ -86,6 +86,7 @@ module Apipie
 
       def validate(value)
         return false if value.nil?
+        return true if @type == Hash and value.respond_to? :keys
         value.is_a? @type
       end
 
