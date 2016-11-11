@@ -310,7 +310,7 @@ module Apipie
         return unless Apipie.active_dsl?
         _apipie_dsl_data[:params] << [param_name,
                                       validator,
-                                      desc_or_options,
+                                      @_current_param_group.try(:[], :options).presence || desc_or_options,
                                       options.merge(:param_group => @_current_param_group),
                                       block]
       end
