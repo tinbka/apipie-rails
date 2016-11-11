@@ -338,7 +338,9 @@ module Apipie
       # where the group definition should be looked up when no scope
       # given. This is expected to return a controller.
       def _default_param_group_scope
-        @param_group && @param_group[:scope]
+        @param_group && @param_group[:scope] ||
+        @param_description && @param_description.method_description && 
+        @param_description.method_description.resource && @param_description.method_description.resource.controller
       end
 
       def merge_with(other_validator)
