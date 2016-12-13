@@ -313,6 +313,11 @@ module Apipie
               p.validate(value[k]) if value.has_key?(k)
             end
           end
+          if Apipie.configuration.validate_key?
+            value.each do |k, v|
+              raise UnknownParam.new(k) unless @hash_params.find {|_,p| p.name.to_s == k.to_s}
+            end
+          end
         end
         return true
       end
